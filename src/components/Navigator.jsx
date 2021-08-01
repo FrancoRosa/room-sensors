@@ -36,14 +36,20 @@ const Navigator = () => {
           {room.id == selected ? 
             <ul>
               {sensors.map(sensor => (
-                 <li><a>{sensor.name}</a></li> 
+                <li>
+                  <Link to='/sensor'>
+                    {sensor.name}
+                  </Link>
+                </li> 
               ))}
-              <li><a>
-                <span className="has-text-link">
-                  <FontAwesomeIcon icon={faPlus} />
-                </span>
-                <span className="ml-2">Add sensor</span>
-              </a></li>
+              <li>
+                <Link to='/add_sensor'>
+                  <span className="has-text-link">
+                    <FontAwesomeIcon icon={faPlus} />
+                  </span>
+                  <span className="ml-2">Add sensor</span>
+                </Link>
+              </li>
             </ul>
            : ''}
           </li>
