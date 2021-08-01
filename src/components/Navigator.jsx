@@ -5,10 +5,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Navigator = () => {
   const rooms = [
-    {name: "Room 1", id: 0},
-    {name: "Room 2", id: 1},
-    {name: "Room 3", id: 2},
-    {name: "Room 4", id: 3},
+    {name: "Room 1", description: "Blan bla bla", nsensors: 5, last_update: 123123, id: 0},
+    {name: "Room 2", description: "Blan bla bla", nsensors: 1, last_update: 123123, id: 1},
+    {name: "Room 3", description: "Blan bla bla", nsensors: 4, last_update: 123123, id: 2},
+    {name: "Room 4", description: "Blan bla bla", nsensors: 1, last_update: 123123, id: 3},
   ]
 
   const sensors = [
