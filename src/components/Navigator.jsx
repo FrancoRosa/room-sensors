@@ -1,3 +1,8 @@
+import { 
+  faPlus,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 const Navigator = () => {
   const rooms = [
     {name: "Room 1", id: 0},
@@ -30,11 +35,22 @@ const Navigator = () => {
               {sensors.map(sensor => (
                  <li><a>{sensor.name}</a></li> 
               ))}
+              <li><a>
+                <span className="has-text-link">
+                  <FontAwesomeIcon icon={faPlus} />
+                </span>
+                <span className="ml-2">Add sensor</span>
+              </a></li>
             </ul>
            : ''}
           </li>
         ))}
-        <li><a>Create room</a></li>
+        <li><a>
+          <span className="has-text-link">
+            <FontAwesomeIcon icon={faPlus} />
+          </span>
+          <span className="ml-2">Add room</span>
+        </a></li>
       </ul>
     </aside>
   )
