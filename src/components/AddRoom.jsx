@@ -1,4 +1,4 @@
-const AddRooms = () => {
+const AddRoom = () => {
   
   return (
     <div className="column">
@@ -7,14 +7,11 @@ const AddRooms = () => {
           <img src="http://imageipsum.com/300x300" alt="" srcset="" />
         </div> 
         <div className="card-content">
-          <p className="title is-3">{room.name}</p>
-          <p className="subtitle is-5">{room.description}</p>
-          <p>Sensors connected: {room.nsensors}</p>
-          <p>Last update: {room.last_update}</p>
+          <p>test</p>
         </div>
       </div>
     </div>
   )
 }
 
-export default AddRooms
+export default AddRoom

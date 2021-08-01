@@ -2,6 +2,7 @@ import {
   faPlus,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link } from 'react-router-dom';
 
 const Navigator = () => {
   const rooms = [
@@ -24,7 +25,9 @@ const Navigator = () => {
   return (
     <aside className="menu column is-one-fifth m-4">
       <p className="menu-label has-text-link">
-        Rooms
+        <Link to='/rooms'>
+          Rooms
+        </Link>
       </p>
       <ul className="menu-list">
         {rooms.map(room => (
@@ -45,12 +48,14 @@ const Navigator = () => {
            : ''}
           </li>
         ))}
-        <li><a>
-          <span className="has-text-link">
-            <FontAwesomeIcon icon={faPlus} />
-          </span>
-          <span className="ml-2">Add room</span>
-        </a></li>
+        <li>
+          <Link to='/add_room'>
+            <span className="has-text-link">
+              <FontAwesomeIcon icon={faPlus} />
+             </span>
+            <span className="ml-2">Add room</span>
+          </Link>
+        </li>
       </ul>
     </aside>
   )
