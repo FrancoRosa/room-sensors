@@ -32,7 +32,7 @@ const Navigator = () => {
       <ul className="menu-list">
         {rooms.map(room => (
           <li>
-          <a className={room.id == selected ? 'is-active' : ''}>{room.name}</a>
+          <Link to='/room' className={room.id == selected ? 'is-active' : ''}>{room.name}</Link>
           {room.id == selected ? 
             <ul>
               {sensors.map(sensor => (
