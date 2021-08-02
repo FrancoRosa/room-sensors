@@ -31,7 +31,7 @@ def querySensors(room_id, limit):
     result.append(dict)
   return result
 
-def queryMeasurements(room_id, sensor_id,limit):
+def queryMeasurements(room_id, sensor_id, limit):
   result = []
   items = Measurements.query.filter_by(room_id=int(room_id), sensor_id=int(sensor_id)).order_by(Measurements.updated_at.desc()).limit(limit);
   for item in items:
@@ -111,7 +111,28 @@ def deleteSensor(id, room_id):
   db.session.commit()
   return jsonResponse({"message": True})
 
+# measurements
+@app.route('/api/rooms/<room_id>/sensors/<sensor_id>/measurements', methods=['GET'])
+def getMeasurements(room_id, sensor_id):
+  measurements = queryMeasurements(room_id, sensor_id, 100)
+  return jsonResponse({"measurements": measurements})
 
+@app.route('/api/rooms/<room_id>/sensors/<sensor_id>/measurements', methods=['POST'])
+def createMeasurement(room_id, sensor_id):
+  new_measurement = request.get_json()
+  measurement = Measurements(
+    room_id = int(room_id),
+    sensor_id = int(sensor_id),
+    value = new_measurement["value"],
+    updated_at = datetime.now()
+  )
+  try:
+    db.session.add(measurement)
+    db.session.commit()
+    message = True
+  except:
+    message = False
+  return jsonResponse({"message": message})
 
 
 if __name__ == '__main__':
