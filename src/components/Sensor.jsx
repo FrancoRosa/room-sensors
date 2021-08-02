@@ -1,8 +1,28 @@
+import { Line } from 'react-chartjs-2'
+import { timeFromNow, toDateTime, toTime } from '../js/helpers';
+
 const Sensor = () => {
+  const initialData = (labels, data) => ({
+    labels,
+    datasets: [{
+      label: 'Temperature ॰C',
+      data,
+      fill: false,
+      borderColor: '#2ecc71',
+      tension: 0.1
+    }]
+  });
+
+  const options = {
+    animation: {
+        duration: 0
+    }
+  }
+
   const sensor = {
     name: "Location 1",
     description: "Measurements the temperature in the corner, should update every 5 min",
-    last_update: 1627859791742,
+    last_update: 1627839691742,
     variable: 'Temperature',
     unit: '॰C',
     id: 1,
@@ -16,17 +36,21 @@ const Sensor = () => {
     { value: 15.19, timestamp: 1627959796566 },
     { value: 14.19, timestamp: 1628859796566 },
   ]
+
+  const labels = measurements.map(measurement => toTime(measurement.timestamp))
+  
+  const data = measurements.map(measurement => measurement.value)
+
+  console.log(labels)
+  console.log(data)
+
   return (
     <div className="column">
       <p className="title is-3 mt-4 ml-2">{sensor.name}</p>
-      <p className="subtitle is-4 ml-4">{sensor.description}</p>
-      <p className="subtitle is-5 ml-4">Updated at: {sensor.last_update}</p>
-      <div class="is-flex is-flex-wrap-wrap">
-        <div className="card m-4">
-          {measurements.map(measurement => (
-            <li>{measurement.value} {measurement.timestamp}</li>  
-          ))}
-        </div>
+      <p className="subtitle is-4 ml-3">{sensor.description}</p>
+      <p className="subtitle is-5 ml-4">Last update: {timeFromNow(sensor.last_update)}</p>
+      <div className="card m-4">
+        <Line data={() => initialData(labels, data)} options={options}/>
       </div>
     </div>
   )
