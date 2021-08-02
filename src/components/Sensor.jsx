@@ -1,7 +1,10 @@
+import { useState } from 'react';
 import { Line } from 'react-chartjs-2'
 import { timeFromNow, toDateTime, toTime } from '../js/helpers';
 
 const Sensor = () => {
+  const [realtime, setRealtime] = useState(true);
+
   const initialData = (labels, data) => ({
     labels,
     datasets: [{
@@ -41,14 +44,19 @@ const Sensor = () => {
   
   const data = measurements.map(measurement => measurement.value)
 
-  console.log(labels)
-  console.log(data)
-
   return (
     <div className="column">
       <p className="title is-3 mt-4 ml-2">{sensor.name}</p>
-      <p className="subtitle is-4 ml-3">{sensor.description}</p>
       <p className="subtitle is-5 ml-4">Last update: {timeFromNow(sensor.last_update)}</p>
+      <p className="subtitle is-4 ml-3">{sensor.description}</p>
+      <div className="is-flex is-justify-content-space-between">
+        <button className={`button ml-4 ${realtime && 'is-success'}`}>Realtime</button>
+        <div className="is-flex">
+          <input type="date" className="input ml-4" />
+          <input type="date" className="input ml-4" />
+          <button className={`button ml-4 ${!realtime && 'is-success'}`}>Query</button>
+        </div>
+      </div>
       <div className="card m-4">
         <Line data={() => initialData(labels, data)} options={options}/>
       </div>
