@@ -41,24 +41,33 @@ const Sensor = () => {
   ]
 
   const labels = measurements.map(measurement => toTime(measurement.timestamp))
-  
   const data = measurements.map(measurement => measurement.value)
 
   return (
     <div className="column">
       <p className="title is-3 mt-4 ml-2">{sensor.name}</p>
-      <p className="subtitle is-5 ml-4">Last update: {timeFromNow(sensor.last_update)}</p>
-      <p className="subtitle is-4 ml-3">{sensor.description}</p>
-      <div className="is-flex is-justify-content-space-between">
-        <button className={`button ml-4 ${realtime && 'is-success'}`}>Realtime</button>
-        <div className="is-flex">
-          <input type="date" className="input ml-4" />
-          <input type="date" className="input ml-4" />
-          <button className={`button ml-4 ${!realtime && 'is-success'}`}>Query</button>
-        </div>
-      </div>
+      <p className="subtitle is-5 ml-3">Last update: {timeFromNow(sensor.last_update)}</p>
+      <p className="subtitle is-5 ml-3">{sensor.description}</p>
       <div className="card m-4">
         <Line data={() => initialData(labels, data)} options={options}/>
+      </div>
+      <div className="is-flex is-justify-content-space-between">
+        <button
+          onClick={() => setRealtime(true)}
+          className={`button is-outlined ml-4 ${realtime && 'is-success'}`}>
+            Realtime
+        </button>
+        <div className="is-flex">
+          <label class="label ml-4">From:</label>
+          <input type="date" className={`input ml-2 ${!realtime && 'is-success'}`} />
+          <label class="label ml-4">To:</label>
+          <input type="date" className={`input ml-2 ${!realtime && 'is-success'}`} />
+          <button 
+            onClick={() => setRealtime(false)}
+            className={`button is-outlined ml-4 mr-4 ${!realtime && 'is-success'}`}>
+              Query
+          </button>
+        </div>
       </div>
     </div>
   )
