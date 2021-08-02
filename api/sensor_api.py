@@ -20,19 +20,18 @@ def home():
   return "... sensors server running on port %d\n"%portHTTP
 
 @app.route('/api/rooms', methods=['GET'])
-def getEvents():
+def getRooms():
   rooms = Rooms.query.order_by(Rooms.updated_at.desc()).limit(100);
   result = []
   for room in rooms:
     dict = room.as_dict()
     result.append(dict)
-
   response = make_response( jsonify({"rooms": result}), 200)
   response.headers["Content-Type"] = "application/json"
   return response
 
-@app.route('/api/rooms/new', methods=['POST'])
-def newRoom():
+@app.route('/api/rooms', methods=['POST'])
+def createRoom():
   new_room = request.get_json()
   room = Rooms(
     id = new_room["id"],
@@ -41,11 +40,24 @@ def newRoom():
     sensors = new_room["sensors"],
     updated_at = datetime.now()
   )
-  db.session.add(room)
+  try:
+    db.session.add(room)
+    db.session.commit()
+    message = True
+  except:
+    message = False
+  response = make_response( jsonify( {"message": message}), 200)
+  response.headers["Content-Type"] = "application/json"
+  return response
+
+@app.route('/api/rooms/<id>', methods=['DELETE'])
+def deleteRoom(id):
+  Rooms.query.filter_by(id = int(id)).delete()
   db.session.commit()
   response = make_response( jsonify( {"message": True}), 200)
   response.headers["Content-Type"] = "application/json"
   return response
-  
+
+
 if __name__ == '__main__':
   app.run(debug = True, port = portHTTP, host = '0.0.0.0')
