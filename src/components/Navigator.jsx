@@ -1,26 +1,33 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { getRooms } from '../js/api';
 
 const Navigator = () => {
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [selectedSensor, setSelectedSensor] = useState(null);
+  const [rooms, setRooms] = useState([]);
+  const [sensors, setSensors] = useState([]);
   
-  const rooms = [
-    {name: "Room 1", description: "Blan bla bla", nsensors: 5, last_update: 123123, id: 0},
-    {name: "Room 2", description: "Blan bla bla", nsensors: 1, last_update: 123123, id: 1},
-    {name: "Room 3", description: "Blan bla bla", nsensors: 4, last_update: 123123, id: 2},
-    {name: "Room 4", description: "Blan bla bla", nsensors: 1, last_update: 123123, id: 3},
-  ]
+  useEffect(() => {
+    getRooms().then(res => setRooms(res.rooms))
+  },[])
 
-  const sensors = [
-    {name: "Location 1", id: 0},
-    {name: "Location 2", id: 1},
-    {name: "Location 3", id: 2},
-    {name: "Location 4", id: 3},
-    {name: "Location 5", id: 4},
-  ]
+  // const rooms = [
+  //   {name: "Room 1", description: "Blan bla bla", nsensors: 5, last_update: 123123, id: 0},
+  //   {name: "Room 2", description: "Blan bla bla", nsensors: 1, last_update: 123123, id: 1},
+  //   {name: "Room 3", description: "Blan bla bla", nsensors: 4, last_update: 123123, id: 2},
+  //   {name: "Room 4", description: "Blan bla bla", nsensors: 1, last_update: 123123, id: 3},
+  // ]
+
+  // const sensors = [
+  //   {name: "Location 1", id: 0},
+  //   {name: "Location 2", id: 1},
+  //   {name: "Location 3", id: 2},
+  //   {name: "Location 4", id: 3},
+  //   {name: "Location 5", id: 4},
+  // ]
 
   
   return (
