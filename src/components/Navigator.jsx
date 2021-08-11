@@ -1,10 +1,12 @@
-import { 
-  faPlus,
-} from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const Navigator = () => {
+  const [selectedRoom, setSelectedRoom] = useState(null);
+  const [selectedSensor, setSelectedSensor] = useState(null);
+  
   const rooms = [
     {name: "Room 1", description: "Blan bla bla", nsensors: 5, last_update: 123123, id: 0},
     {name: "Room 2", description: "Blan bla bla", nsensors: 1, last_update: 123123, id: 1},
@@ -20,30 +22,38 @@ const Navigator = () => {
     {name: "Location 5", id: 4},
   ]
 
-  const selected = 2;
   
   return (
     <aside className="menu column is-one-fifth m-4">
       <p className="menu-label has-text-link">
-        <Link to='/rooms'>
+        <Link to='/rooms' onClick={() => {setSelectedRoom(null); setSelectedSensor(null)}}>
           Rooms
         </Link>
       </p>
       <ul className="menu-list">
         {rooms.map(room => (
           <li>
-          <Link to='/room' className={room.id == selected ? 'is-active' : ''}>{room.name}</Link>
-          {room.id == selected ? 
+          <Link 
+            to='/room' 
+            onClick={() => {setSelectedRoom(room.id); setSelectedSensor(null)}} 
+            className={room.id == selectedRoom ? 'is-active' : ''}>
+            {room.name}
+          </Link>
+          {room.id == selectedRoom ? 
             <ul>
               {sensors.map(sensor => (
                 <li>
-                  <Link to='/sensor'>
+                  <Link to='/sensor'
+                    onClick={() => setSelectedSensor(sensor.id)} 
+                    className={sensor.id == selectedSensor ? 'is-active' : ''}>
                     {sensor.name}
                   </Link>
                 </li> 
               ))}
               <li>
-                <Link to='/add_sensor'>
+                <Link 
+                  onClick={() => setSelectedSensor(null)} 
+                  to='/add_sensor'>
                   <span className="has-text-link">
                     <FontAwesomeIcon icon={faPlus} />
                   </span>
@@ -55,7 +65,7 @@ const Navigator = () => {
           </li>
         ))}
         <li>
-          <Link to='/add_room'>
+          <Link to='/add_room' onClick={() => setSelectedRoom(null)}>
             <span className="has-text-link">
               <FontAwesomeIcon icon={faPlus} />
              </span>
