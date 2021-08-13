@@ -14,8 +14,8 @@ const AddRoom = () => {
     const sensors = 0
     createRoom({name, description, id, sensors})
       .then(res => {if(res.message) {
-        history.push('/')
         addRoom({name, description, id, sensors})
+        history.push('/')
     }} )
   }
 

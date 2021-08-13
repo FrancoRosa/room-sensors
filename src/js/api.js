@@ -19,3 +19,10 @@ export const createRoom = async room => {
   const response = await axios.post(url, room)
   return response.data
 }
+
+export const deleteRoom = async id => {
+  console.log('... deleting room');
+  const url = `http://${host}/api/rooms/${id}`;
+  const response = await axios.delete(url)
+  return response.data
+}
