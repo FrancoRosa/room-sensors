@@ -3,11 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getRooms } from '../js/api';
+import { useStoreState, useStoreActions } from 'easy-peasy';
 
 const Navigator = () => {
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [selectedSensor, setSelectedSensor] = useState(null);
-  const [rooms, setRooms] = useState([]);
+  const rooms = useStoreState(state => state.rooms)
+  const setRooms = useStoreActions(actions => actions.setRooms)
+  // const [rooms, setRooms] = useState([]);
   const [sensors, setSensors] = useState([]);
   
   useEffect(() => {

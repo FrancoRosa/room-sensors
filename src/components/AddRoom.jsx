@@ -1,3 +1,4 @@
+import { useStoreActions } from "easy-peasy"
 import { useState } from "react"
 import { useHistory } from "react-router-dom"
 import { createRoom } from "../js/api"
@@ -7,11 +8,15 @@ const AddRoom = () => {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [id, setId] = useState('')
+  const addRoom = useStoreActions(actions => actions.addRoom)
 
   const handleSave = () => {
     const sensors = 0
     createRoom({name, description, id, sensors})
-      .then(res => {if(res.message) history.push('/')} )
+      .then(res => {if(res.message) {
+        history.push('/')
+        addRoom({name, description, id, sensors})
+    }} )
   }
 
   return (
