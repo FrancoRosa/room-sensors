@@ -44,7 +44,7 @@ const Navigator = () => {
         {rooms.map(room => (
           <li>
           <Link 
-            to='/room' 
+            to={`/room/${room.id}`} 
             onClick={() => {setSelectedRoom(room.id); setSelectedSensor(null)}} 
             className={room.id == selectedRoom ? 'is-active' : ''}>
             {room.name}

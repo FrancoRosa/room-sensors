@@ -1,11 +1,10 @@
+import { useStoreState } from "easy-peasy";
+import { useParams } from "react-router-dom"
+
 const Room = () => {
-  const room = {
-    name: "Room 1",
-    description: "Bla bla bla",
-    nsensors: 5,
-    last_update: 123123,
-    id: 0
-  }
+  const { id } = useParams();
+  const rooms = useStoreState(state => state.rooms)
+  const room = rooms.filter(room => room.id == id)[0] 
 
   const sensors = [
     {name: "Location 1", id: 0, value: 12.3, unit: '॰C', variable: 'Temperature' },
