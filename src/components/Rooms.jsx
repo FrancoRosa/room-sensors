@@ -1,3 +1,5 @@
+import { faPlus } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useStoreState } from "easy-peasy"
 import { Link } from "react-router-dom"
 const Rooms = () => {
@@ -5,6 +7,7 @@ const Rooms = () => {
 
   return (
     <div className="column">
+      <h1 className="title is-3 m-4">Rooms</h1>
       <div class="is-flex is-flex-wrap-wrap">
         {rooms.map(room => (
           <div className="card m-4">
@@ -18,6 +21,16 @@ const Rooms = () => {
             </Link>
           </div>
         ))}
+        <div className="card m-4">
+          <Link to='/add_room'>
+            <div className="card-content">
+              <p className="title is-3">Add room</p>
+              <p className="subtitle is-1 has-text-success">
+                <FontAwesomeIcon icon={faPlus} />
+              </p>
+            </div>
+          </Link>
+        </div>
       </div>
     </div>
   )

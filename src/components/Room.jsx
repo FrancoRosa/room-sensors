@@ -1,4 +1,4 @@
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import { useEffect } from "react";
@@ -27,7 +27,6 @@ const Room = () => {
   }
 
   useEffect(() => {
-    console.log('... getting sensors')
     getSensors(room_id).then(res => setSensors(res.sensors) ) 
   }, [room_id])
 
@@ -57,6 +56,16 @@ const Room = () => {
             </Link>
           </div>
         ))}
+        <div className="card m-4">
+          <Link to={`/add_sensor/${room_id}`}>
+            <div className="card-content">
+              <p className="title is-3">Add sensor</p>
+              <p className="subtitle is-1 has-text-success">
+                <FontAwesomeIcon icon={faPlus} />
+              </p>
+            </div>
+          </Link>
+        </div>
       </div>
     </div>
   )

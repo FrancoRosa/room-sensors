@@ -105,6 +105,7 @@ def updateRoom(id):
 @app.route('/api/rooms/<id>', methods=['DELETE'])
 def deleteRoom(id):
     Rooms.query.filter_by(id=int(id)).delete()
+    Sensors.query.filter_by(room_id=int(id)).delete()
     db.session.commit()
     return jsonResponse({"message": True})
 
