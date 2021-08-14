@@ -142,6 +142,8 @@ def createSensor(room_id):
 @app.route('/api/rooms/<room_id>/sensors/<id>', methods=['DELETE'])
 def deleteSensor(id, room_id):
     Sensors.query.filter_by(id=int(id), room_id=int(room_id)).delete()
+    Measurements.query.filter_by(
+        sensor_id=int(id), room_id=int(room_id)).delete()
     db.session.commit()
     return jsonResponse({"message": True})
 
