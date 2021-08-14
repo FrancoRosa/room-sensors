@@ -36,7 +36,7 @@ const Navigator = () => {
             <ul>
               {sensors.map(sensor => (
                 <li>
-                  <Link to='/sensor'
+                  <Link to={`/room/${room.id}/sensor/${sensor.id}`}
                     onClick={() => setSelectedSensor(sensor.id)} 
                     className={sensor.id == selectedSensor ? 'is-active' : ''}>
                     {sensor.name}

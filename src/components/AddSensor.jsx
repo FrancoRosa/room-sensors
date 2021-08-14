@@ -1,6 +1,6 @@
 import { useStoreActions, useStoreState } from "easy-peasy";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { createSensor, updateRoom as updateRoomDB } from "../js/api";
 
 const AddSensor = () => {
@@ -11,6 +11,7 @@ const AddSensor = () => {
   const [id, setId] = useState('');
 
   const { room_id } = useParams();
+  const history = useHistory()
 
   const rooms = useStoreState(state => state.rooms)
   const updateRoom = useStoreActions(actions => actions.updateRoom)
@@ -21,8 +22,10 @@ const AddSensor = () => {
     const currentSensors = rooms.filter(room => room.id == room_id)[0].sensors
     createSensor(room_id, newSensor).then(res => console.log('sensor created'))
     updateRoomDB(room_id, {sensors: currentSensors+1})
-      .then(res => console.log(res.message))
-    updateRoom(room_id, {sensors: currentSensors+1})
+      .then(res => {
+        updateRoom(room_id, {sensors: currentSensors+1})
+        history.push(`/room/${room_id}`)
+      })
   }
   
   return (

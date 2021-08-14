@@ -2,7 +2,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import { useEffect } from "react";
-import { useHistory, useParams } from "react-router-dom"
+import { Link, useHistory, useParams } from "react-router-dom"
 import { deleteRoom, getSensors } from "../js/api";
 
 const Room = () => {
@@ -45,14 +45,16 @@ const Room = () => {
       <div class="is-flex is-flex-wrap-wrap">
         {sensors.map(sensor => (
           <div className="card m-4">
-            <div className="card-content">
-              <p className="title is-3">{sensor.name}</p>
-              <p className="subtitle is-5">{sensor.variable}</p>
-              <p>
-                <span className="">{sensor.value} </span>
-                <span className="">{sensor.unit} </span>
-              </p>
-            </div>
+            <Link to={`/room/${room_id}/sensor/${sensor.id}`}>
+              <div className="card-content">
+                <p className="title is-3">{sensor.name}</p>
+                <p className="subtitle is-5">{sensor.variable}</p>
+                <p>
+                  <span className="">{sensor.value} </span>
+                  <span className="">{sensor.unit} </span>
+                </p>
+              </div>
+            </Link>
           </div>
         ))}
       </div>
