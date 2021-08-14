@@ -20,9 +20,30 @@ export const createRoom = async room => {
   return response.data
 }
 
-export const deleteRoom = async id => {
+export const deleteRoom = async room_id => {
   console.log('... deleting room');
-  const url = `http://${host}/api/rooms/${id}`;
+  const url = `http://${host}/api/rooms/${room_id}`;
   const response = await axios.delete(url)
+  return response.data
+}
+
+export const updateRoom = async (room_id, obj) => {
+  console.log('... updating room');
+  const url = `http://${host}/api/rooms/${room_id}`;
+  const response = await axios.put(url, obj)
+  return response.data
+}
+
+export const getSensors = async (room_id) => {
+  console.log('... getting sensors');
+  const url = `http://${host}/api/rooms/${room_id}/sensors`;
+  const response = await axios.get(url)
+  return response.data
+}
+
+export const createSensor = async (room_id, sensor) => {
+  console.log('... creating room');
+  const url = `http://${host}/api/rooms/${room_id}/sensors`;
+  const response = await axios.post(url, sensor)
   return response.data
 }

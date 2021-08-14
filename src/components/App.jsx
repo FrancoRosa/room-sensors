@@ -17,12 +17,12 @@ const App = () => {
         <StoreProvider store={store}>
           <Navigator />
           <Switch>
-              <Redirect exact from="/" to="/rooms" />
-              <Route path="/rooms" component={Rooms} />
-              <Route path="/room/:id" component={Room} />
-              <Route path="/sensor" component={Sensor} />
-              <Route path="/add_room" component={AddRoom} />
-              <Route path="/add_sensor" component={AddSensor} />
+            <Redirect exact from="/" to="/rooms" />
+            <Route path="/rooms" component={Rooms} />
+            <Route path="/room/:room_id" component={Room} />
+            <Route path="/sensor" component={Sensor} />
+            <Route path="/add_room" component={AddRoom} />
+            <Route path="/add_sensor/:room_id" component={AddSensor} />
           </Switch>
         </StoreProvider>
       </div>

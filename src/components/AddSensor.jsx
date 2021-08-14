@@ -1,4 +1,30 @@
+import { useStoreActions, useStoreState } from "easy-peasy";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { createSensor, updateRoom as updateRoomDB } from "../js/api";
+
 const AddSensor = () => {
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [variable, setVariable] = useState('');
+  const [unit, setUnit] = useState('');
+  const [id, setId] = useState('');
+
+  const { room_id } = useParams();
+
+  const rooms = useStoreState(state => state.rooms)
+  const updateRoom = useStoreActions(actions => actions.updateRoom)
+
+  const handleSaveSensor = () => {
+    const newSensor = {name, description, variable, unit, id}
+
+    const currentSensors = rooms.filter(room => room.id == room_id)[0].sensors
+    createSensor(room_id, newSensor).then(res => console.log('sensor created'))
+    updateRoomDB(room_id, {sensors: currentSensors+1})
+      .then(res => console.log(res.message))
+    updateRoom(room_id, {sensors: currentSensors+1})
+  }
+  
   return (
     <div className="column">
       <div className="card m-4 p-4">
@@ -6,36 +32,46 @@ const AddSensor = () => {
         <div className="field">
           <label className="label">Name</label>
           <p className="control">
-            <input className="input" type="text" placeholder="Sensor name" />
+            <input 
+              onChange={e => setName(e.target.value)} value={name}
+              className="input" type="text" placeholder="Sensor name" />
           </p>
         </div>
         <div className="field">
           <label className="label">Description</label>
           <p className="control">
-            <textarea className="textarea" type="text" placeholder="Sensor description" />
+            <textarea 
+              onChange={e => setDescription(e.target.value)} value={description}
+              className="textarea" type="text" placeholder="Sensor description" />
           </p>
         </div>
         <div className="field">
           <label className="label">Variable</label>
           <p className="control">
-            <input className="input" type="text" placeholder="Ex: Temperature" />
+            <input 
+              onChange={e => setVariable(e.target.value)} value={variable}
+              className="input" type="text" placeholder="Ex: Temperature" />
           </p>
         </div>
         <div className="field">
           <label className="label">Unit</label>
           <p className="control">
-            <input className="input" type="text" placeholder="Ex: ॰C" />
+            <input 
+              onChange={e => setUnit(e.target.value)} value={unit}
+              className="input" type="text" placeholder="Ex: ॰C" />
           </p>
         </div>
         <div className="field">
           <label className="label">Id</label>
           <p className="control">
-            <input className="input" type="number" min='1' step="1" placeholder="Unique id" />
+            <input 
+              onChange={e => setId(e.target.value)} value={id}
+              className="input" type="number" min='1' step="1" placeholder="Unique id" />
           </p>
         </div>
-        <div class="field mt-4">
-          <div class="control">
-            <button class="button is-primary">
+        <div className="field mt-4">
+          <div className="control">
+            <button className="button is-primary" onClick={handleSaveSensor}>
               Save
             </button>
           </div>

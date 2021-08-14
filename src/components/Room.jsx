@@ -1,34 +1,35 @@
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useStoreActions, useStoreState } from "easy-peasy";
+import { useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom"
-import { deleteRoom } from "../js/api";
+import { deleteRoom, getSensors } from "../js/api";
 
 const Room = () => {
-  const { id } = useParams();
+  const { room_id } = useParams();
   const history = useHistory();
   const removeRoom = useStoreActions(action => action.removeRoom)
+  const setSensors = useStoreActions(action => action.setSensors)
 
   const rooms = useStoreState(state => state.rooms)
-  const room = rooms.filter(room => room.id == id)[0] 
+  const sensors = useStoreState(state => state.sensors)
+  const room = rooms.filter(room => room.id == room_id)[0] 
 
-  const sensors = [
-    {name: "Location 1", id: 0, value: 12.3, unit: '॰C', variable: 'Temperature' },
-    {name: "Location 1", id: 1, value: 12.3, unit: '॰C', variable: 'Temperature' },
-    {name: "Location 1", id: 2, value: 12.3, unit: '॰C', variable: 'Temperature' },
-    {name: "Location 1", id: 3, value: 12.3, unit: '॰C', variable: 'Temperature' },
-  ]
+  
 
   const handleRoomDelete = () => {
-    deleteRoom(id).then(res => {
+    deleteRoom(room_id).then(res => {
       if (res.message) {
         history.push('/')
-        removeRoom(id)
+        removeRoom(room_id)
       }
     })
-    
-
   }
+
+  useEffect(() => {
+    console.log('... getting sensors')
+    getSensors(room_id).then(res => setSensors(res.sensors) ) 
+  }, [room_id])
 
   return (
     <div className="column">
