@@ -54,3 +54,10 @@ export const deleteSensor = async (room_id, sensor_id) => {
   const response = await axios.delete(url)
   return response.data
 }
+
+export const getMeasurements = async (room_id, sensor_id) => {
+  console.log('... getting sensor values');
+  const url = `http://${host}/api/rooms/${room_id}/sensors/${sensor_id}/measurements`;
+  const response = await axios.get(url)
+  return response.data
+}

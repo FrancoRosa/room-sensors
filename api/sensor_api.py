@@ -40,7 +40,7 @@ def querySensors(room_id, limit):
 def queryMeasurements(room_id, sensor_id, limit):
     result = []
     items = Measurements.query.filter_by(room_id=int(room_id), sensor_id=int(
-        sensor_id)).order_by(Measurements.updated_at.desc()).limit(limit)
+        sensor_id)).order_by(Measurements.updated_at.asc()).limit(limit)
     for item in items:
         dict = item.as_dict()
         result.append(dict)

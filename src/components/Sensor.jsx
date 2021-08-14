@@ -1,10 +1,10 @@
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useStoreActions, useStoreState } from 'easy-peasy';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2'
 import { useHistory, useParams } from 'react-router-dom';
-import { deleteSensor } from '../js/api';
+import { deleteSensor, getMeasurements } from '../js/api';
 import { timeFromNow, toDateTime, toTime } from '../js/helpers';
 
 const Sensor = () => {
@@ -14,6 +14,8 @@ const Sensor = () => {
   const removeSensor = useStoreActions(actions => actions.removeSensor)
   const sensor = sensors.filter(sensor => sensor.id == sensor_id)[0]
   const history = useHistory()
+  const measurements = useStoreState(state => state.measurements)
+  const setMeasurements = useStoreActions(actions => actions.setMeasurements)
 
   const initialData = (labels, data) => ({
     labels,
@@ -32,16 +34,25 @@ const Sensor = () => {
     }
   }
 
-  const measurements = [
-    { value: 18.19, timestamp: 1627859796566 },
-    { value: 19.19, timestamp: 1627860796566 },
-    { value: 20.19, timestamp: 1627867796566 },
-    { value: 15.19, timestamp: 1627959796566 },
-    { value: 14.19, timestamp: 1628859796566 },
-  ]
+  // const measurements = [
+  //   { value: 18.19, timestamp: 1627859796566 },
+  //   { value: 19.19, timestamp: 1627860796566 },
+  //   { value: 20.19, timestamp: 1627867796566 },
+  //   { value: 15.19, timestamp: 1627959796566 },
+  //   { value: 14.19, timestamp: 1628859796566 },
+  // ]
 
-  const labels = measurements.map(measurement => toTime(measurement.timestamp))
+  const labels = measurements.map(measurement => toTime(measurement.updated_at))
   const data = measurements.map(measurement => measurement.value)
+
+  useEffect(() => {
+    console.log('...measurements')
+    getMeasurements(room_id, sensor_id).then(res => {
+      console.log(res.measurements)
+      setMeasurements(res.measurements)
+    })
+  }, [sensor_id])
+
 
   const handleSensorDelete = () => {
     deleteSensor(room_id, sensor_id).then(res => {
