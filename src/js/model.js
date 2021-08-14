@@ -11,6 +11,7 @@ export default {
 
   sensors: [],
   setSensors: action((state, sensors) => {state.sensors = [...sensors]}),
+  removeSensor: action((state, id) => {state.sensors = state.sensors.filter(sensor => sensor.id != id)}),
   
   measurements: [],
   

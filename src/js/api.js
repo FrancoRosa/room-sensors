@@ -47,3 +47,10 @@ export const createSensor = async (room_id, sensor) => {
   const response = await axios.post(url, sensor)
   return response.data
 }
+
+export const deleteSensor = async (room_id, sensor_id) => {
+  console.log('... deleting sensor');
+  const url = `http://${host}/api/rooms/${room_id}/sensors/${sensor_id}`;
+  const response = await axios.delete(url)
+  return response.data
+}

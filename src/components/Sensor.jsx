@@ -1,9 +1,19 @@
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useStoreActions, useStoreState } from 'easy-peasy';
 import { useState } from 'react';
 import { Line } from 'react-chartjs-2'
+import { useHistory, useParams } from 'react-router-dom';
+import { deleteSensor } from '../js/api';
 import { timeFromNow, toDateTime, toTime } from '../js/helpers';
 
 const Sensor = () => {
   const [realtime, setRealtime] = useState(true);
+  const {sensor_id, room_id} = useParams()
+  const sensors = useStoreState(state => state.sensors)
+  const removeSensor = useStoreActions(actions => actions.removeSensor)
+  const sensor = sensors.filter(sensor => sensor.id == sensor_id)[0]
+  const history = useHistory()
 
   const initialData = (labels, data) => ({
     labels,
@@ -22,16 +32,6 @@ const Sensor = () => {
     }
   }
 
-  const sensor = {
-    name: "Location 1",
-    description: "Measurements the temperature in the corner, should update every 5 min",
-    last_update: 1627839691742,
-    variable: 'Temperature',
-    unit: '॰C',
-    id: 1,
-    room_id: 1,
-  }
-
   const measurements = [
     { value: 18.19, timestamp: 1627859796566 },
     { value: 19.19, timestamp: 1627860796566 },
@@ -43,9 +43,25 @@ const Sensor = () => {
   const labels = measurements.map(measurement => toTime(measurement.timestamp))
   const data = measurements.map(measurement => measurement.value)
 
+  const handleSensorDelete = () => {
+    deleteSensor(room_id, sensor_id).then(res => {
+      if (res.message) {
+        history.push(`/room/${room_id}`)
+        removeSensor(sensor_id)
+      }
+    }) 
+  }
+
   return (
     <div className="column">
-      <p className="title is-3 mt-4 ml-2">{sensor.name}</p>
+      <div className="is-flex is-justify-content-space-between">
+        <p className="title is-3 mt-4 ml-2">{sensor.name}</p>
+        <p 
+          onClick={handleSensorDelete}
+          className="has-text-danger p-4 m-4 title is-5">
+          <FontAwesomeIcon icon={faTrash} />
+        </p>
+      </div>
       <p className="subtitle is-5 ml-3">Last update: {timeFromNow(sensor.last_update)}</p>
       <p className="subtitle is-5 ml-3">{sensor.description}</p>
       <div className="card m-4">
