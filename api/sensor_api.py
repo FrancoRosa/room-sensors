@@ -1,7 +1,11 @@
 from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
-from models import *
+from flask_socketio import SocketIO
+from json import dumps
+from time import time
 from datetime import datetime
+from models import *
+
 
 portHTTP = 9999
 
@@ -16,6 +20,11 @@ def create_app():
 
 
 app = create_app()
+socketio = SocketIO(app, cors_allowed_origins="*")
+
+
+def broadcast(val):
+    socketio.send(dumps(val), broadcast=True)
 
 
 def queryRooms(limit):
@@ -168,6 +177,7 @@ def createMeasurement(room_id, sensor_id):
     try:
         db.session.add(measurement)
         db.session.commit()
+        broadcast({**measurement.as_dict(), 'updated_at': int(time())})
         message = True
     except:
         message = False

@@ -1,4 +1,4 @@
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faCog, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import { useEffect, useState } from 'react';
@@ -11,11 +11,13 @@ const Sensor = () => {
   const [realtime, setRealtime] = useState(true);
   const {sensor_id, room_id} = useParams()
   const sensors = useStoreState(state => state.sensors)
+  const message = useStoreState(state => state.message)
   const removeSensor = useStoreActions(actions => actions.removeSensor)
   const sensor = sensors.filter(sensor => sensor.id == sensor_id)[0]
-  const history = useHistory()
   const measurements = useStoreState(state => state.measurements)
   const setMeasurements = useStoreActions(actions => actions.setMeasurements)
+  const addMeasurement = useStoreActions(actions => actions.addMeasurement)
+  const history = useHistory()
 
   const initialData = (labels, data) => ({
     labels,
@@ -49,6 +51,9 @@ const Sensor = () => {
     })
   }, [sensor_id])
 
+  useEffect(() => {
+    if (realtime) addMeasurement({...message, updated_at: Date(message.updated_at)})
+  }, [message])
 
   const handleSensorDelete = () => {
     deleteSensor(room_id, sensor_id).then(res => {
@@ -80,6 +85,7 @@ const Sensor = () => {
         <button
           onClick={() => setRealtime(true)}
           className={`button is-outlined ml-4 ${realtime && 'is-success'}`}>
+            <FontAwesomeIcon icon={faCog} spin={realtime} className="mr-2"/> 
             Realtime
         </button>
         <div className="is-flex">

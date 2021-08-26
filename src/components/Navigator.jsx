@@ -2,7 +2,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getRooms } from '../js/api';
+import { getRooms, socket } from '../js/api';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 
 const Navigator = () => {
@@ -10,10 +10,16 @@ const Navigator = () => {
   const [selectedSensor, setSelectedSensor] = useState(null);
   const rooms = useStoreState(state => state.rooms)
   const sensors = useStoreState(state => state.sensors)
+  const message = useStoreState(state => state.message)
   const setRooms = useStoreActions(actions => actions.setRooms)
+  const setMessage = useStoreActions(actions => actions.setMessage)
   
   useEffect(() => {
     getRooms().then(res => setRooms(res.rooms))
+    socket.on('message', msg => setMessage(JSON.parse(msg)))
+    return () => {
+      socket.off('message');
+    };
   },[])
 
   return (
