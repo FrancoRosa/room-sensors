@@ -1,4 +1,4 @@
-import { Switch, Redirect, Route } from 'react-router-dom';
+import { Switch, Redirect, Route, Router } from 'react-router-dom';
 import { StoreProvider, createStore } from 'easy-peasy';
 import AddRoom from "./AddRoom";
 import AddSensor from "./AddSensor";
@@ -14,17 +14,17 @@ const App = () => {
   return (
     <div className="container mt-4">
       <div className="columns">
-        <StoreProvider store={store}>
-          <Navigator />
-          <Switch>
-            <Redirect exact from="/" to="/rooms" />
-            <Route path="/rooms" component={Rooms} />
-            <Route path="/room/:room_id/sensor/:sensor_id" component={Sensor} />
-            <Route path="/room/:room_id" component={Room} />
-            <Route path="/add_room" component={AddRoom} />
-            <Route path="/add_sensor/:room_id" component={AddSensor} />
-          </Switch>
-        </StoreProvider>
+          <StoreProvider store={store}>
+            <Navigator />
+              <Switch>
+                <Redirect exact from="/" to="/rooms" />
+                <Route path="/rooms" component={Rooms} />
+                <Route path="/room/:room_id/sensor/:sensor_id" component={Sensor} />
+                <Route path="/room/:room_id" component={Room} />
+                <Route path="/add_room" component={AddRoom} />
+                <Route path="/add_sensor/:room_id" component={AddSensor} />
+              </Switch>
+          </StoreProvider>
       </div>
     </div>
   );

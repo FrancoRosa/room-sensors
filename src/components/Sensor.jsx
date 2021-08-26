@@ -34,16 +34,12 @@ const Sensor = () => {
     }
   }
 
-  // const measurements = [
-  //   { value: 18.19, timestamp: 1627859796566 },
-  //   { value: 19.19, timestamp: 1627860796566 },
-  //   { value: 20.19, timestamp: 1627867796566 },
-  //   { value: 15.19, timestamp: 1627959796566 },
-  //   { value: 14.19, timestamp: 1628859796566 },
-  // ]
-
   const labels = measurements.map(measurement => toTime(measurement.updated_at))
   const data = measurements.map(measurement => measurement.value)
+
+  useEffect(() => {
+    if (sensors.length==0) history.push('/')
+  },[])
 
   useEffect(() => {
     console.log('...measurements')
@@ -65,6 +61,8 @@ const Sensor = () => {
 
   return (
     <div className="column">
+      {sensors.length != 0 ?
+      <>
       <div className="is-flex is-justify-content-space-between">
         <p className="title is-3 mt-4 ml-2">{sensor.name}</p>
         <p 
@@ -96,6 +94,8 @@ const Sensor = () => {
           </button>
         </div>
       </div>
+      </>
+      : ''}
     </div>
   )
 }
