@@ -1,4 +1,4 @@
-from json import dumps
+from json import loads
 from time import sleep
 import requests
 import serial
@@ -16,4 +16,4 @@ while True:
 
 while True:
     line = ser.readline()
-    print(dumps(line))
+    print(loads(line))
