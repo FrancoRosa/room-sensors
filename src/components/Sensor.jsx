@@ -4,11 +4,14 @@ import { useStoreActions, useStoreState } from 'easy-peasy';
 import { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2'
 import { useHistory, useParams } from 'react-router-dom';
-import { deleteSensor, getMeasurements } from '../js/api';
+import { deleteSensor, getMeasurements, getMeasurementsQuery } from '../js/api';
 import { timeFromNow, toDateTime, toTime } from '../js/helpers';
 
 const Sensor = () => {
   const [realtime, setRealtime] = useState(true);
+  const [queryDate, setQueryDate] = useState(null);
+  const [labels, setLabels] = useState([])
+  const [data, setData] = useState([])
   const {sensor_id, room_id} = useParams()
   const sensors = useStoreState(state => state.sensors)
   const message = useStoreState(state => state.message)
@@ -17,6 +20,7 @@ const Sensor = () => {
   const measurements = useStoreState(state => state.measurements)
   const setMeasurements = useStoreActions(actions => actions.setMeasurements)
   const addMeasurement = useStoreActions(actions => actions.addMeasurement)
+  const shiftMeasurement = useStoreActions(actions => actions.shiftMeasurement)
   const history = useHistory()
 
   const initialData = (labels, data) => ({
@@ -36,9 +40,7 @@ const Sensor = () => {
     }
   }
 
-  const labels = measurements.map(measurement => toTime(measurement.updated_at))
-  const data = measurements.map(measurement => measurement.value)
-
+  
   useEffect(() => {
     if (sensors.length==0) history.push('/')
   },[])
@@ -52,8 +54,16 @@ const Sensor = () => {
   }, [sensor_id])
 
   useEffect(() => {
-    if (realtime) addMeasurement({...message, updated_at: Date(message.updated_at)})
+    if (realtime) {
+      if (measurements.length > 100) shiftMeasurement();
+      addMeasurement({...message, id: Date.now(), updated_at: Date(message.updated_at)});
+    }
   }, [message])
+
+  useEffect(() => {
+    setLabels(measurements.map(measurement => toTime(measurement.updated_at)))
+    setData(measurements.map(measurement => measurement.value))
+  }, [measurements])
 
   const handleSensorDelete = () => {
     deleteSensor(room_id, sensor_id).then(res => {
@@ -62,6 +72,13 @@ const Sensor = () => {
         removeSensor(sensor_id)
       }
     }) 
+  }
+
+  const handleQuery = () => {
+    setRealtime(false);
+    getMeasurementsQuery(room_id, sensor_id, {date: queryDate}).then(res => {
+      setMeasurements(res.measurements)
+    })
   }
 
   return (
@@ -89,12 +106,13 @@ const Sensor = () => {
             Realtime
         </button>
         <div className="is-flex">
-          <label class="label ml-4">From:</label>
-          <input type="date" className={`input ml-2 ${!realtime && 'is-success'}`} />
-          <label class="label ml-4">To:</label>
-          <input type="date" className={`input ml-2 ${!realtime && 'is-success'}`} />
+          <label class="label ml-4">Date:</label>
+          <input 
+            onChange={e => setQueryDate(e.target.value)}  
+            value={queryDate} type="date" 
+            className={`input ml-2 ${!realtime && 'is-success'}`} />
           <button 
-            onClick={() => setRealtime(false)}
+            onClick={handleQuery}
             className={`button is-outlined ml-4 mr-4 ${!realtime && 'is-success'}`}>
               Query
           </button>

@@ -56,6 +56,18 @@ def queryMeasurements(room_id, sensor_id, limit):
     return result
 
 
+def queryMeasurementsByDate(room_id, sensor_id, date):
+    result = []
+    items = Measurements.query.filter(
+        Measurements.room_id == int(room_id),
+        Measurements.sensor_id == int(sensor_id),
+        Measurements.updated_at.contains(date)).order_by(Measurements.updated_at)
+    for item in items:
+        dict = item.as_dict()
+        result.append(dict)
+    return result
+
+
 def jsonResponse(dict):
     response = make_response(jsonify(dict), 200)
     response.headers["Content-Type"] = "application/json"
@@ -161,7 +173,7 @@ def deleteSensor(id, room_id):
 
 @app.route('/api/rooms/<room_id>/sensors/<sensor_id>/measurements', methods=['GET'])
 def getMeasurements(room_id, sensor_id):
-    measurements = queryMeasurements(room_id, sensor_id, 100)
+    measurements = queryMeasurements(room_id, sensor_id, 288)
     return jsonResponse({"measurements": measurements})
 
 
@@ -177,11 +189,35 @@ def createMeasurement(room_id, sensor_id):
     try:
         db.session.add(measurement)
         db.session.commit()
+        message = True
+    except:
+        message = False
+    return jsonResponse({"message": message})
+
+
+@app.route('/api/echo/rooms/<room_id>/sensors/<sensor_id>/measurements', methods=['POST'])
+def createMeasurementEcho(room_id, sensor_id):
+    new_measurement = request.get_json()
+    measurement = Measurements(
+        room_id=int(room_id),
+        sensor_id=int(sensor_id),
+        value=new_measurement["value"],
+        updated_at=datetime.now()
+    )
+    try:
+        db.session.add(measurement)
         broadcast({**measurement.as_dict(), 'updated_at': int(time())})
         message = True
     except:
         message = False
     return jsonResponse({"message": message})
+
+
+@app.route('/api/rooms/<room_id>/sensors/<sensor_id>/measurements/query', methods=['POST'])
+def queryMeasurement(room_id, sensor_id):
+    query = request.get_json()
+    measurements = queryMeasurementsByDate(room_id, sensor_id, query['date'])
+    return jsonResponse({"measurements": measurements})
 
 
 if __name__ == '__main__':

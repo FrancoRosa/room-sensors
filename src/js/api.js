@@ -61,3 +61,10 @@ export const getMeasurements = async (room_id, sensor_id) => {
   const response = await axios.get(url)
   return response.data
 }
+
+export const getMeasurementsQuery = async (room_id, sensor_id, data) => {
+  console.log('... getting sensor values query');
+  const url = `http://${host}/api/rooms/${room_id}/sensors/${sensor_id}/measurements/query`;
+  const response = await axios.post(url, data)
+  return response.data
+}

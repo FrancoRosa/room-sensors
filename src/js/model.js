@@ -16,6 +16,7 @@ export default {
   measurements: [],
   setMeasurements: action((state, measurements) => {state.measurements = [...measurements]}),
   addMeasurement: action((state, measurement) => {state.measurements.push(measurement)}),
+  shiftMeasurement: action((state) => {state.measurements.shift()}),
 
   message: {},
   setMessage: action((state, message) => {console.log(message); state.message = message})
