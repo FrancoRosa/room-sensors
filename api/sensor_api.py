@@ -221,4 +221,4 @@ def queryMeasurement(room_id, sensor_id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=portHTTP, host='0.0.0.0')
+    app.run(debug=False, port=portHTTP, host='0.0.0.0')
