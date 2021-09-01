@@ -19,5 +19,5 @@ export default {
   shiftMeasurement: action((state) => {state.measurements.shift()}),
 
   message: {},
-  setMessage: action((state, message) => {console.log(message); state.message = message})
+  setMessage: action((state, message) => {state.message = message})
 }

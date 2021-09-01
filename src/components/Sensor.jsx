@@ -48,13 +48,12 @@ const Sensor = () => {
   useEffect(() => {
     console.log('...measurements')
     getMeasurements(room_id, sensor_id).then(res => {
-      console.log(res.measurements)
       setMeasurements(res.measurements)
     })
   }, [sensor_id])
 
   useEffect(() => {
-    if (realtime) {
+    if (realtime && (message.room_id == room_id) && (message.sensor_id == sensor_id)) {
       if (measurements.length > 100) shiftMeasurement();
       addMeasurement({...message, id: Date.now(), updated_at: Date(message.updated_at)});
     }

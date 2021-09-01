@@ -16,7 +16,10 @@ const Navigator = () => {
   
   useEffect(() => {
     getRooms().then(res => setRooms(res.rooms))
-    socket.on('message', msg => setMessage(JSON.parse(msg)))
+    socket.on('message', msg => {
+      setMessage(JSON.parse(msg))
+      console.log(JSON.parse(msg))
+    })
     return () => {
       socket.off('message');
     };
