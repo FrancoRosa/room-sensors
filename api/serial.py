@@ -1,9 +1,11 @@
 from json import loads
-from time import sleep
 from requests import post
-import serial
-import re
+from re import sub
+from threading import Thread
+from serial import Serial
+from time import sleep, time
 
+time_to_send = False
 url = 'http://localhost:9999'
 sample = {
     "room": 1,
@@ -35,23 +37,49 @@ def send_echo(payload):
     return True
 
 
+def send_measurement(payload):
+    room = payload['room']
+    sensors = payload['sensors']
+    for sensor in sensors:
+        id = sensor['id']
+        value = sensor['value']
+        post(
+            '%s/api/rooms/%d/sensors/%d/measurements' %
+            (url, room, id), json={'value': value}
+        )
+    return True
+
+
+def check_time():
+    global time_to_send
+    while True:
+        sleep(1)
+        if int(time() % 300):
+            time_to_send = True
+
+
 def main():
-    send_echo(sample)
+    global time_to_send
+    Thread(check_time).start()
+
+    while True:
+        try:
+            ser = Serial('/dev/ttyS0')
+            print('.. port connected')
+            while True:
+                line = ser.readline()
+                text = line.decode('utf-8')
+                text = sub(',]}$', ']}', text.strip())
+                text = loads(text)
+                send_echo(text)
+                if time_to_send:
+                    send_measurement(text)
+                    time_to_send = False
+
+        except:
+            print('.. port not found')
+            sleep(5)
 
 
 if __name__ == "__main__":
     main()
-
-# while True:
-#     try:
-#         ser = serial.Serial('/dev/ttyS0')
-#         print('.. port connected')
-#         while True:
-#             line = ser.readline()
-#             text = line.decode('utf-8')
-#             text = re.sub(',]}$', ']}', text.strip())
-#             process_data(loads(text))
-#
-#     except:
-#         print('.. port not found')
-#         sleep(5)
