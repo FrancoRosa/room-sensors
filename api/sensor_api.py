@@ -73,6 +73,24 @@ def jsonResponse(dict):
     response.headers["Content-Type"] = "application/json"
     return response
 
+
+def updateSensorEntry(room_id, sensor_id, value):
+    print('updating sensor entry')
+    sensor = Sensors.query.filter_by(
+        room_id=int(room_id), id=int(sensor_id)).first()
+    if sensor:
+        sensor.updated_at = datetime.utcnow()
+        sensor.last_measurement = value
+        db.session.commit()
+
+
+def updateRoomEntry(room_id):
+    print('updating sensor entry')
+    room = Rooms.query.filter_by(id=int(room_id)).first()
+    if room:
+        room.updated_at = datetime.utcnow()
+        db.session.commit()
+
 # root
 
 
@@ -97,7 +115,7 @@ def createRoom():
         name=new_room["name"],
         description=new_room["description"],
         sensors=new_room["sensors"],
-        updated_at=datetime.now()
+        updated_at=datetime.utcnow()
     )
     try:
         db.session.add(room)
@@ -109,7 +127,7 @@ def createRoom():
 
 
 @app.route('/api/rooms/<id>', methods=['PUT'])
-def updateRoom(id):
+def updateRoomEndPoint(id):
     data = request.get_json()
     print('data:', data)
     foundRoom = Rooms.query.filter_by(id=int(id)).first()
@@ -149,7 +167,7 @@ def createSensor(room_id):
         variable=new_sensor["variable"],
         unit=new_sensor["unit"],
         description=new_sensor["description"],
-        updated_at=datetime.now()
+        updated_at=datetime.utcnow()
     )
     try:
         db.session.add(sensor)
@@ -184,10 +202,12 @@ def createMeasurement(room_id, sensor_id):
         room_id=int(room_id),
         sensor_id=int(sensor_id),
         value=new_measurement["value"],
-        updated_at=datetime.now()
+        updated_at=datetime.utcnow()
     )
     try:
         db.session.add(measurement)
+        updateSensorEntry(room_id, sensor_id, new_measurement["value"])
+        updateRoomEntry(room_id)
         db.session.commit()
         message = True
     except:
@@ -202,10 +222,13 @@ def createMeasurementEcho(room_id, sensor_id):
         room_id=int(room_id),
         sensor_id=int(sensor_id),
         value=new_measurement["value"],
-        updated_at=datetime.now()
+        updated_at=datetime.utcnow()
     )
+
     try:
         db.session.add(measurement)
+        updateSensorEntry(room_id, sensor_id, new_measurement["value"])
+        updateRoomEntry(room_id)
         broadcast({**measurement.as_dict(), 'updated_at': int(time())})
         message = True
     except:

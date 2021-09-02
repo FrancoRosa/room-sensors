@@ -2,6 +2,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useStoreState } from "easy-peasy"
 import { Link } from "react-router-dom"
+import { toDateTime } from "../js/helpers"
 const Rooms = () => {
   const rooms = useStoreState(state => state.rooms)
 
@@ -16,7 +17,7 @@ const Rooms = () => {
                 <p className="title is-3">{room.name} <span className='subtitle is-4'>({room.id})</span></p>
                 <p className="subtitle is-5">{room.description}</p>
                 <p>Sensors connected: {room.sensors}</p>
-                <p>Last update: {room.last_update}</p>
+                <p>Last update: {toDateTime(room.updated_at)}</p>
               </div>
             </Link>
           </div>
