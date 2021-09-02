@@ -29,7 +29,7 @@ def broadcast(val):
 
 def queryRooms(limit):
     result = []
-    items = Rooms.query.order_by(Rooms.updated_at.desc()).limit(limit)
+    items = Rooms.query.order_by(Rooms.id).limit(limit)
     for item in items:
         dict = item.as_dict()
         result.append(dict)
@@ -39,7 +39,7 @@ def queryRooms(limit):
 def querySensors(room_id, limit):
     result = []
     items = Sensors.query.filter_by(room_id=int(room_id)).order_by(
-        Sensors.updated_at.desc()).limit(limit)
+        Sensors.id).limit(limit)
     for item in items:
         dict = item.as_dict()
         result.append(dict)
