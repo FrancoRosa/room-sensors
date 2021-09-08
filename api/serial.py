@@ -60,7 +60,7 @@ def check_time():
 
 def main():
     global time_to_send
-    Thread(check_time).start()
+    Thread(target=check_time).start()
 
     while True:
         try:
