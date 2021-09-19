@@ -5,11 +5,11 @@ import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import { useHistory, useParams } from "react-router-dom";
 import { deleteSensor, getMeasurements, getMeasurementsQuery } from "../js/api";
-import { timeFromNow, toDateTime, toTime } from "../js/helpers";
+import { timeFromNow, toDate, toDateTime, toTime } from "../js/helpers";
 
 const Sensor = () => {
   const [realtime, setRealtime] = useState(true);
-  const [queryDate, setQueryDate] = useState(null);
+  const [queryDate, setQueryDate] = useState(toDate(Date.now()));
   const [labels, setLabels] = useState([]);
   const [data, setData] = useState([]);
   const { sensor_id, room_id } = useParams();
@@ -78,12 +78,14 @@ const Sensor = () => {
   }, [measurements]);
 
   const handleSensorDelete = () => {
-    deleteSensor(room_id, sensor_id).then((res) => {
-      if (res.message) {
-        history.push(`/room/${room_id}`);
-        removeSensor(sensor_id);
-      }
-    });
+    if (window.confirm("Delete sensor and all data?")) {
+      deleteSensor(room_id, sensor_id).then((res) => {
+        if (res.message) {
+          history.push(`/room/${room_id}`);
+          removeSensor(sensor_id);
+        }
+      });
+    }
   };
 
   const handleQuery = () => {
@@ -100,36 +102,38 @@ const Sensor = () => {
       {sensors.length != 0 ? (
         <>
           <div className="is-flex is-justify-content-space-between">
-            <p className="title is-3 mt-4 ml-2">{sensor.name}</p>
+            <p className="title is-3">{sensor.name}</p>
             <p
               onClick={handleSensorDelete}
-              className="has-text-danger p-4 m-4 title is-5"
+              className="has-text-danger title is-5"
             >
-              <FontAwesomeIcon icon={faTrash} />
+              <FontAwesomeIcon icon={faTrash} className="mt-4" />
             </p>
           </div>
-          <div className="card m-4">
+          <div className="card">
             <Line data={() => initialData(labels, data)} options={options} />
           </div>
-          <div className="is-flex is-justify-content-space-between">
+          <div className="is-flex is-justify-content-space-between p-3">
             <button
               onClick={() => setRealtime(true)}
-              className={`button is-outlined ml-4 ${realtime && "is-success"}`}
+              className={`is-medium button is-outlined ${
+                realtime && "is-success"
+              }`}
             >
               <FontAwesomeIcon icon={faCog} spin={realtime} className="mr-2" />
               Realtime
             </button>
             <div className="is-flex">
-              <label class="label ml-4">Date:</label>
+              <label class="label is-medium mr-2">Date:</label>
               <input
                 onChange={(e) => setQueryDate(e.target.value)}
                 value={queryDate}
                 type="date"
-                className={`input ml-2 ${!realtime && "is-success"}`}
+                className={`is-medium input mr-3 ${!realtime && "is-success"}`}
               />
               <button
                 onClick={handleQuery}
-                className={`button is-outlined ml-4 mr-4 ${
+                className={`is-medium button is-outlined ${
                   !realtime && "is-success"
                 }`}
               >

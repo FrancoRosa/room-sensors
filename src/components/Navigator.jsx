@@ -27,9 +27,8 @@ const Navigator = () => {
   }, []);
 
   return (
-    <aside className="menu column is-one-fifth p-0 ml-4 mt-4 is-size-5">
-      <Clock />
-      <p className="menu-label has-text-link">
+    <aside className="menu column is-one-fifth p-4 is-size-5">
+      <p className="menu-label has-text-link ml-2">
         <Link
           to="/rooms"
           onClick={() => {
@@ -40,7 +39,7 @@ const Navigator = () => {
           Rooms
         </Link>
       </p>
-      <ul className="menu-list">
+      <ul className="menu-list p-0 m-0">
         {rooms.map((room) => (
           <li>
             <Link
@@ -54,13 +53,17 @@ const Navigator = () => {
               {room.name}
             </Link>
             {room.id == selectedRoom ? (
-              <ul>
+              <ul className="p-0 m-0">
                 {sensors.map((sensor) => (
-                  <li>
+                  <li className="p-0 m-0">
                     <Link
                       to={`/room/${room.id}/sensor/${sensor.id}`}
                       onClick={() => setSelectedSensor(sensor.id)}
-                      className={sensor.id == selectedSensor ? "is-active" : ""}
+                      className={
+                        sensor.id == selectedSensor
+                          ? "p-0 m-0 is-active"
+                          : "p-0 m-0"
+                      }
                     >
                       {sensor.name}
                     </Link>
@@ -74,7 +77,7 @@ const Navigator = () => {
                     <span className="has-text-link">
                       <FontAwesomeIcon icon={faPlus} />
                     </span>
-                    <span className="ml-2">Add sensor</span>
+                    <span className="ml-2 is-size-6">Add sensor</span>
                   </Link>
                 </li>
               </ul>

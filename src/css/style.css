@@ -200,7 +200,18 @@ body {
 }
 
 .clock {
-  position: fixed;
-  bottom: 0.5em;
+  position: absolute;
+  top: 1em;
   left: 1em;
+  text-justify: center;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.menu {
+  max-height: 90vh;
+  overflow: scroll;
+  position: relative;
+  top: 6em;
+  padding-bottom: 4em;
 }

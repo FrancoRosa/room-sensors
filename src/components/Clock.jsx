@@ -11,6 +11,13 @@ const Clock = () => {
     }, 1000);
   }, []);
 
-  return <p className="heading has-text-link is-size-5">{toTime(time)}</p>;
+  return (
+    <p
+      disabled
+      className="button is-outlined  is-link clock heading has-text-link is-size-4"
+    >
+      {toTime(time)}
+    </p>
+  );
 };
 export default Clock;

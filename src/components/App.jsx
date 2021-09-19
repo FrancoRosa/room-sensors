@@ -7,6 +7,7 @@ import Rooms from "./Rooms";
 import Room from "./Room";
 import Sensor from "./Sensor";
 import model from "../js/model";
+import Clock from "./Clock";
 
 const store = createStore(model);
 
@@ -15,6 +16,7 @@ const App = () => {
     <div className="container is-widescreen">
       <div className="columns">
         <StoreProvider store={store}>
+          <Clock />
           <Navigator />
           <Switch>
             <Redirect exact from="/" to="/rooms" />
