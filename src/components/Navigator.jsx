@@ -45,8 +45,12 @@ const Navigator = () => {
             <Link
               to={`/room/${room.id}`}
               onClick={() => {
-                setSelectedRoom(room.id);
                 setSelectedSensor(null);
+                if (selectedRoom == room.id) {
+                  setSelectedRoom(null);
+                } else {
+                  setSelectedRoom(room.id);
+                }
               }}
               className={room.id == selectedRoom ? "is-active" : ""}
             >

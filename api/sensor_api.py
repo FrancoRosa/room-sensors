@@ -58,13 +58,16 @@ def queryMeasurements(room_id, sensor_id, limit):
 
 def queryMeasurementsByDate(room_id, sensor_id, date):
     result = []
+    print('query:', room_id, sensor_id, date)
+
     items = Measurements.query.filter(
         Measurements.room_id == int(room_id),
         Measurements.sensor_id == int(sensor_id),
-        Measurements.updated_at.contains(date)).order_by(Measurements.updated_at)
+        Measurements.updated_at.contains(date)).order_by(Measurements.updated_at).limit(300)
     for item in items:
         dict = item.as_dict()
         result.append(dict)
+    print(result)
     return result
 
 
