@@ -64,13 +64,14 @@ def main():
 
     while True:
         try:
-            ser = Serial('/dev/ttyS0')
+            ser = Serial('/dev/ttyUSB0')
             print('.. port connected')
             while True:
                 line = ser.readline()
                 text = line.decode('utf-8')
                 text = sub(',]}$', ']}', text.strip())
                 text = loads(text)
+                print(text)
                 send_echo(text)
                 if time_to_send:
                     send_measurement(text)
