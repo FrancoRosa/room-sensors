@@ -109,12 +109,21 @@ const Sensor = () => {
       {sensors.length != 0 ? (
         <>
           <div className="is-flex is-justify-content-space-between">
-            <p className="title is-3">{sensor.name}</p>
+            <p>
+              <span className="title is-3">{sensor.name}: </span>
+              <span className="is-size-3 has-text-success ">
+                {sensor.last_measurement}
+              </span>
+              <span className="is-size-4 has-text-success ">
+                {" "}
+                {sensor.unit}
+              </span>
+            </p>
             <p
               onClick={handleSensorDelete}
               className="has-text-danger title is-5"
             >
-              <FontAwesomeIcon icon={faTrash} className="mt-4" />
+              <FontAwesomeIcon icon={faTrash} className="mt-4 mr-4" />
             </p>
           </div>
           <div className="card">

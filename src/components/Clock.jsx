@@ -14,7 +14,7 @@ const Clock = () => {
   return (
     <p
       disabled
-      className="button is-outlined  is-link clock heading has-text-link is-size-4"
+      className="button is-outlined is-white clock heading has-text-white is-size-4"
     >
       {toTime(time)}
     </p>
