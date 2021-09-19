@@ -1,18 +1,16 @@
-import { useState } from "react"
-import { useEffect } from "react"
-import { toTime } from "../js/helpers"
+import { useState } from "react";
+import { useEffect } from "react";
+import { toTime } from "../js/helpers";
 
 const Clock = () => {
-  const [time, setTime] = useState(Date())
-  
-  useEffect(()=>{
+  const [time, setTime] = useState(Date());
+
+  useEffect(() => {
     setInterval(() => {
-      setTime(Date())
+      setTime(Date());
     }, 1000);
-  },[])
-  
-  return (
-    <p className="heading has-text-link clock is-size-5">{toTime(time)}</p>
-  )
-}
-export default Clock
+  }, []);
+
+  return <p className="heading has-text-link is-size-5">{toTime(time)}</p>;
+};
+export default Clock;
