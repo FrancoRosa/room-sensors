@@ -54,7 +54,7 @@ def check_time():
     global time_to_send
     while True:
         sleep(1)
-        if int(time() % 300):
+        if int(time() % 300) == 0:
             time_to_send = True
 
 

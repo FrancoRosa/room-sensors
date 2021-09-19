@@ -42,6 +42,11 @@ const Sensor = () => {
     animation: {
       duration: 0,
     },
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
   };
 
   useEffect(() => {
@@ -98,7 +103,7 @@ const Sensor = () => {
   };
 
   return (
-    <div className="column">
+    <div className="column pt-4">
       {sensors.length != 0 ? (
         <>
           <div className="is-flex is-justify-content-space-between">
