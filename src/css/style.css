@@ -191,11 +191,13 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 body::-webkit-scrollbar,
+.content::-webkit-scrollbar,
 .menu::-webkit-scrollbar {
   display: none;
 }
 
 body,
+.content,
 .menu {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
@@ -211,9 +213,14 @@ body,
 }
 
 .menu {
-  max-height: 90vh;
+  max-height: 60vh;
   overflow: scroll;
   position: relative;
   top: 6em;
   padding-bottom: 4em;
+}
+
+.content {
+  max-height: 100vh;
+  overflow: scroll;
 }

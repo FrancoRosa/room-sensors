@@ -52,7 +52,7 @@ const Room = () => {
   }, [message]);
 
   return (
-    <div className="column m-0 p-0">
+    <div className="content column m-0 p-0">
       {rooms.length != 0 ? (
         <>
           <div className="">
