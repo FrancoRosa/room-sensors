@@ -46,10 +46,16 @@ def querySensors(room_id, limit):
     return result
 
 
-def queryMeasurements(room_id, sensor_id, limit):
+def queryMeasurements(room_id, sensor_id, limit=300):
     result = []
-    items = Measurements.query.filter_by(room_id=int(room_id), sensor_id=int(
-        sensor_id)).order_by(Measurements.updated_at.asc()).limit(limit)
+    today = datetime.now().date()
+    print("______")
+    print(today)
+    print("______")
+    items = Measurements.query.filter(
+        Measurements.room_id == int(room_id),
+        Measurements.sensor_id == int(sensor_id),
+        Measurements.updated_at.contains(today)).order_by(Measurements.updated_at).limit(limit)
     for item in items:
         dict = item.as_dict()
         result.append(dict)

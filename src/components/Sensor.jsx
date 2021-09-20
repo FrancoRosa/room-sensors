@@ -83,6 +83,14 @@ const Sensor = () => {
     setData(measurements.map((measurement) => measurement.value));
   }, [measurements]);
 
+  const onSetRealtime = () => {
+    getMeasurements(room_id, sensor_id).then((res) => {
+      console.log(res.measurements);
+      setMeasurements(res.measurements);
+    });
+    setRealtime(true);
+  };
+
   const handleSensorDelete = () => {
     if (window.confirm("Delete sensor and all data?")) {
       deleteSensor(room_id, sensor_id).then((res) => {
@@ -94,9 +102,11 @@ const Sensor = () => {
     }
   };
 
-  const handleQuery = () => {
+  const handleQuery = (e) => {
+    console.log("query date:", e.target.value);
+    setQueryDate(e.target.value);
     setRealtime(false);
-    getMeasurementsQuery(room_id, sensor_id, { date: queryDate }).then(
+    getMeasurementsQuery(room_id, sensor_id, { date: e.target.value }).then(
       (res) => {
         console.log(res.measurements);
         setMeasurements(res.measurements);
@@ -131,7 +141,7 @@ const Sensor = () => {
           </div>
           <div className="is-flex is-justify-content-space-between p-3">
             <button
-              onClick={() => setRealtime(true)}
+              onClick={onSetRealtime}
               className={`is-medium button is-outlined ${
                 realtime && "is-success"
               }`}
@@ -142,19 +152,11 @@ const Sensor = () => {
             <div className="is-flex">
               <label class="label is-medium mr-2">Date:</label>
               <input
-                onChange={(e) => setQueryDate(e.target.value)}
+                onChange={handleQuery}
                 value={queryDate}
                 type="date"
                 className={`is-medium input mr-3 ${!realtime && "is-success"}`}
               />
-              <button
-                onClick={handleQuery}
-                className={`is-medium button is-outlined ${
-                  !realtime && "is-success"
-                }`}
-              >
-                Query
-              </button>
             </div>
           </div>
         </>
