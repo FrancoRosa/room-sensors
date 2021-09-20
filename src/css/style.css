@@ -190,11 +190,13 @@ input[type="range"]::-webkit-slider-thumb {
   width: 90%;
 }
 
-body::-webkit-scrollbar {
+body::-webkit-scrollbar,
+.menu::-webkit-scrollbar {
   display: none;
 }
 
-body {
+body,
+.menu {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
