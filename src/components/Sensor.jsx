@@ -47,6 +47,24 @@ const Sensor = () => {
         display: false,
       },
     },
+    scales: {
+      y: {
+        suggestedMin: 10,
+        suggestedMax: 45,
+        ticks: {
+          font: {
+            size: 20,
+          },
+        },
+      },
+      x: {
+        ticks: {
+          font: {
+            size: 20,
+          },
+        },
+      },
+    },
   };
 
   useEffect(() => {

@@ -217,7 +217,6 @@ def createMeasurement(room_id, sensor_id):
         db.session.add(measurement)
         updateSensorEntry(room_id, sensor_id, new_measurement["value"])
         updateRoomEntry(room_id)
-        db.session.commit()
         message = True
     except:
         message = False
@@ -236,8 +235,6 @@ def createMeasurementEcho(room_id, sensor_id):
 
     try:
         db.session.add(measurement)
-        updateSensorEntry(room_id, sensor_id, new_measurement["value"])
-        updateRoomEntry(room_id)
         broadcast({**measurement.as_dict(), 'updated_at': int(time())})
         message = True
     except:
