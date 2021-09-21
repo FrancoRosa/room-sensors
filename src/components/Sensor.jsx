@@ -23,6 +23,7 @@ const Sensor = () => {
   const shiftMeasurement = useStoreActions(
     (actions) => actions.shiftMeasurement
   );
+  const [value, setValue] = useState(sensor.last_measurement);
   const history = useHistory();
 
   const initialData = (labels, data) => ({
@@ -80,17 +81,16 @@ const Sensor = () => {
   }, [sensor_id]);
 
   useEffect(() => {
-    if (
-      realtime &&
-      message.room_id == room_id &&
-      message.sensor_id == sensor_id
-    ) {
-      if (measurements.length > 300) shiftMeasurement();
-      addMeasurement({
-        ...message,
-        id: Date.now(),
-        updated_at: Date(message.updated_at),
-      });
+    if (message.room_id == room_id && message.sensor_id == sensor_id) {
+      setValue(message.value);
+      if (realtime) {
+        if (measurements.length > 300) shiftMeasurement();
+        addMeasurement({
+          ...message,
+          id: Date.now(),
+          updated_at: Date(message.updated_at),
+        });
+      }
     }
   }, [message]);
 
@@ -139,9 +139,7 @@ const Sensor = () => {
           <div className="is-flex is-justify-content-space-between">
             <p>
               <span className="title is-3">{sensor.name}: </span>
-              <span className="is-size-3 has-text-success ">
-                {sensor.last_measurement}
-              </span>
+              <span className="is-size-3 has-text-success ">{value}</span>
               <span className="is-size-4 has-text-success ">
                 {" "}
                 {sensor.unit}
