@@ -5,7 +5,7 @@ from json import dumps
 from time import time
 from datetime import datetime
 from models import *
-
+from helpers import *
 
 portHTTP = 9999
 
@@ -250,24 +250,36 @@ def queryMeasurement(room_id, sensor_id):
 
 
 # wifi
+
+@app.route('/api/network', methods=['POST'])
+def setNetwork():
+    credentials = request.get_json()
+    network_conf(credentials['ssid'], credentials['pass'])
+    return jsonResponse({"message": True})
+
+
 @app.route('/api/network/card', methods=['GET'])
 def getNetworkCard():
-    return jsonResponse({"message": True})
+    card = get_wifi_card()
+    return jsonResponse({"card": card})
 
 
 @app.route('/api/network/scan', methods=['GET'])
 def getNetworkScan():
-    return jsonResponse({"message": True})
+    networks = scan_wifi()
+    return jsonResponse({"networks": networks})
 
 
 # system
 @app.route('/api/poweroff', methods=['POST'])
 def poweroffDevice():
+    device_shutdown()
     return jsonResponse({"message": True})
 
 
 @app.route('/api/restart', methods=['POST'])
 def restartDevice():
+    device_restart()
     return jsonResponse({"message": True})
 
 
