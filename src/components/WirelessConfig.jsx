@@ -12,8 +12,8 @@ const WirelessConfig = () => {
   const [networkCard, setNetworkCard] = useState(null);
 
   useEffect(() => {
-    // deviceNetScan().then((res) => setNetworks(res.networks));
-    // deviceNetCard().then((res) => setNetworkCard(res.card));
+    deviceNetScan().then((res) => setNetworks(res.networks));
+    deviceNetCard().then((res) => setNetworkCard(res.card));
   }, []);
 
   return (
@@ -71,7 +71,7 @@ const WirelessConfig = () => {
             </thead>
             <tbody>
               {networks.map((network) => (
-                <tr>
+                <tr key={network.ssid}>
                   <td className="has-text-centered is-size-6">
                     {" "}
                     {network.ssid}{" "}

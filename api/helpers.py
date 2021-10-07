@@ -1,4 +1,5 @@
 from subprocess import check_output
+from re import search
 
 
 def device_restart():
