@@ -8,6 +8,8 @@ import Room from "./Room";
 import Sensor from "./Sensor";
 import model from "../js/model";
 import Clock from "./Clock";
+import WirelessConfig from "./WirelessConfig";
+import SystemConfig from "./SystemConfig";
 
 const store = createStore(model);
 
@@ -25,6 +27,8 @@ const App = () => {
             <Route path="/room/:room_id" component={Room} />
             <Route path="/add_room" component={AddRoom} />
             <Route path="/add_sensor/:room_id" component={AddSensor} />
+            <Route path="/wireless" component={WirelessConfig} />
+            <Route path="/system" component={SystemConfig} />
           </Switch>
         </StoreProvider>
       </div>

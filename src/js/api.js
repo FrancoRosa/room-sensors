@@ -69,3 +69,45 @@ export const getMeasurementsQuery = async (room_id, sensor_id, data) => {
   const response = await axios.post(url, data);
   return response.data;
 };
+
+export const deviceNetCard = async () => {
+  console.log("... getting events");
+  const url = `http://${host}/api/network/card`;
+  const response = await axios.get(url);
+  return response.data;
+};
+
+export const deviceNetScan = async () => {
+  console.log("... getting events");
+  const url = `http://${host}/api/network/scan`;
+  const response = await axios.get(url);
+  return response.data;
+};
+
+export const getDeviceId = async () => {
+  console.log("... getting device id");
+  const url = `http://${host}/api/id`;
+  const response = await axios.get(url);
+  return response.data;
+};
+
+export const updateNetwork = async (ssid, pass) => {
+  console.log("... configure wifi");
+  const url = `http://${host}/api/network`;
+  const response = await axios.post(url, { ssid, pass });
+  return response.data;
+};
+
+export const devicePowerOff = async () => {
+  console.log("... shutting down");
+  const url = `http://${host}/api/poweroff`;
+  const response = await axios.post(url);
+  return response.data;
+};
+
+export const deviceRestart = async () => {
+  console.log("... restarting");
+  const url = `http://${host}/api/restart`;
+  const response = await axios.post(url);
+  return response.data;
+};

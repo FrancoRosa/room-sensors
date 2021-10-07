@@ -1,4 +1,4 @@
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faPowerOff, faWifi } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -96,6 +96,20 @@ const Navigator = () => {
               <FontAwesomeIcon icon={faPlus} />
             </span>
             <span className="ml-2">Add room</span>
+          </Link>
+        </li>
+        <li>
+          <Link to="/wireless" onClick={() => setSelectedRoom(null)}>
+            <span className="has-text-link">
+              <FontAwesomeIcon icon={faWifi} />
+            </span>
+            <span className="ml-2">Wireless</span>
+          </Link>
+          <Link to="/system" onClick={() => setSelectedRoom(null)}>
+            <span className="has-text-link">
+              <FontAwesomeIcon icon={faPowerOff} />
+            </span>
+            <span className="ml-2">System</span>
           </Link>
         </li>
       </ul>

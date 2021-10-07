@@ -249,5 +249,27 @@ def queryMeasurement(room_id, sensor_id):
     return jsonResponse({"measurements": measurements})
 
 
+# wifi
+@app.route('/api/network/card', methods=['GET'])
+def getNetworkCard():
+    return jsonResponse({"message": True})
+
+
+@app.route('/api/network/scan', methods=['GET'])
+def getNetworkScan():
+    return jsonResponse({"message": True})
+
+
+# system
+@app.route('/api/poweroff', methods=['POST'])
+def poweroffDevice():
+    return jsonResponse({"message": True})
+
+
+@app.route('/api/restart', methods=['POST'])
+def restartDevice():
+    return jsonResponse({"message": True})
+
+
 if __name__ == '__main__':
     app.run(debug=False, port=portHTTP, host='0.0.0.0')
