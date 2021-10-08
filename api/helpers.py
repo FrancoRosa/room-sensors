@@ -10,6 +10,14 @@ def device_shutdown():
     check_output(['shutdown', 'now'])
 
 
+def chunks(lst, n):
+    return [lst[i:i + n] for i in range(0, len(lst), n)]
+
+
+def insert_dash(text, group_len):
+    return '-'.join(chunks(text, group_len))
+
+
 def get_wifi_card():
     # If card is currently connected to network
     info = check_output(['ip', 'route', 'list'])

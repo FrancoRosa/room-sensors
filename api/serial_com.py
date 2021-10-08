@@ -7,6 +7,7 @@ from time import sleep, time
 
 time_to_send = False
 url = 'http://localhost:9999'
+url_server = 'http://161.35.178.247:9999'
 sample = {
     "room": 1,
     "sensors": [
@@ -47,6 +48,14 @@ def send_measurement(payload):
             '%s/api/rooms/%d/sensors/%d/measurements' %
             (url, room, id), json={'value': value}
         )
+        try:
+            post(
+                '%s/api/rooms/%d/sensors/%d/measurements' %
+                (url_server, room, id), json={'value': value}
+            )
+        except:
+            pass
+
     return True
 
 

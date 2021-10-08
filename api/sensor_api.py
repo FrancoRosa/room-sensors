@@ -283,5 +283,11 @@ def restartDevice():
     return jsonResponse({"message": True})
 
 
+@app.route('/api/id')
+def getDeviceId():
+    id = get_device_id()
+    return jsonResponse({"id": id})
+
+
 if __name__ == '__main__':
     app.run(debug=False, port=portHTTP, host='0.0.0.0')

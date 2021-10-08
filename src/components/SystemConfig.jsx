@@ -7,7 +7,7 @@ const SystemConfig = () => {
   const [id, setId] = useState("");
 
   useEffect(() => {
-    // getDeviceId().then((res) => setId(res.id));
+    getDeviceId().then((res) => setId(res.id));
   }, []);
 
   return (
