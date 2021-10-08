@@ -46,12 +46,12 @@ def send_measurement(payload):
         value = sensor['value']
         post(
             '%s/api/rooms/%d/sensors/%d/measurements' %
-            (url, room, id), json={'value': value}
+            (url, room, id), json={'value': value}, timeout=0.1
         )
         try:
             post(
                 '%s/api/rooms/%d/sensors/%d/measurements' %
-                (url_server, room, id), json={'value': value}
+                (url_server, room, id), json={'value': value}, timeout=0.1
             )
         except:
             pass
