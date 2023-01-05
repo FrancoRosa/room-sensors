@@ -5,6 +5,7 @@
 ## Deploy
 
 ### Install Node on RPi Zero
+
 Instructions for RPI zero
 
 https://hassancorrigan.com/blog/install-nodejs-on-a-raspberry-pi-zero/#:~:text=NodeJS%20Install%20Steps%20for%20Pi, xz%20extension).
@@ -12,7 +13,7 @@ https://hassancorrigan.com/blog/install-nodejs-on-a-raspberry-pi-zero/#:~:text=N
 ### Run web server under PM2
 
 ```BASH
-pm2 serve /home/pi/room-sensors/build 80 --name 'web' 
+pm2 serve /home/pi/room-sensors/build 80 --name 'web'
 
 ```
 
@@ -28,7 +29,7 @@ sqlite> .databases
 sqlite> exit
 ```
 
-Then, to create the tables with the model skema run the following code in a python terminal
+Then, to create the tables with the model schema run the following code in a python terminal
 
 ```Python
 from models import *
