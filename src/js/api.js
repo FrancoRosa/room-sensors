@@ -1,7 +1,7 @@
 import axios from "axios";
 import io from "socket.io-client";
 
-const host = `${window.location.hostname}:9999`;
+const host = `${window.location.hostname}:5001`;
 // const host = "localhost:9999";
 
 export const socket = io.connect(`http://${host}`);
