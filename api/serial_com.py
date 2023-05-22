@@ -31,8 +31,6 @@ def send_echo(payload):
         id = sensor['id']
         value = sensor['value']
         endpoint = '%s/api/echo/rooms/%d/sensors/%d/measurements' % (url, room, id)
-        print("...echo")
-        print(endpoint)
         post(endpoint, json={'value': value})
     return True
 
@@ -45,8 +43,6 @@ def send_measurement(payload):
         value = sensor['value']
         endpoint = '%s/api/rooms/%d/sensors/%d/measurements' % (url, room, id)
         payload = {'value': value}
-        print("...measurements")
-        print(endpoint, payload)
         post(endpoint, json=payload)
 
     return True
@@ -64,12 +60,12 @@ def main():
     global time_to_send
     Thread(target=check_time).start()
 
-    print("... connected")
     while True:
         try:
             ser = Serial('/dev/ttyS0', 115200)
             print('.. port connected')
             while True:
+                print('... waiting for data')
                 line = ser.readline()
                 text = line.decode('utf-8')
                 text = sub(',]}$', ']}', text.strip())
@@ -81,7 +77,7 @@ def main():
                     time_to_send = False
 
         except:
-            print('.. port not found')
+            print('... port not found or error')
             sleep(5)
 
 
