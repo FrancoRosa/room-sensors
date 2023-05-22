@@ -6,8 +6,7 @@ from serial import Serial
 from time import sleep, time
 
 time_to_send = False
-url = 'http://localhost:9999'
-url_server = 'http://161.35.178.247:9999'
+url = 'http://localhost:5001'
 sample = {
     "room": 1,
     "sensors": [
@@ -31,10 +30,10 @@ def send_echo(payload):
     for sensor in sensors:
         id = sensor['id']
         value = sensor['value']
-        post(
-            '%s/api/echo/rooms/%d/sensors/%d/measurements' %
-            (url, room, id), json={'value': value}
-        )
+        endpoint = '%s/api/echo/rooms/%d/sensors/%d/measurements' % (url, room, id)
+        print("...echo")
+        print(endpoint)
+        post(endpoint, json={'value': value})
     return True
 
 
@@ -44,17 +43,11 @@ def send_measurement(payload):
     for sensor in sensors:
         id = sensor['id']
         value = sensor['value']
-        post(
-            '%s/api/rooms/%d/sensors/%d/measurements' %
-            (url, room, id), json={'value': value}, timeout=0.1
-        )
-        try:
-            post(
-                '%s/api/rooms/%d/sensors/%d/measurements' %
-                (url_server, room, id), json={'value': value}, timeout=0.1
-            )
-        except:
-            pass
+        endpoint = '%s/api/rooms/%d/sensors/%d/measurements' % (url, room, id)
+        payload = {'value': value}
+        print("...measurements")
+        print(endpoint, payload)
+        post(endpoint, json=payload)
 
     return True
 
@@ -71,9 +64,10 @@ def main():
     global time_to_send
     Thread(target=check_time).start()
 
+    print("... connected")
     while True:
         try:
-            ser = Serial('/dev/ttyUSB0')
+            ser = Serial('/dev/ttyS0', 115200)
             print('.. port connected')
             while True:
                 line = ser.readline()
@@ -89,6 +83,7 @@ def main():
         except:
             print('.. port not found')
             sleep(5)
+
 
 
 if __name__ == "__main__":
