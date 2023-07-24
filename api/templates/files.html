@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Archivos invernadero</title>
+  </head>
+  <body>
+    <h2>Archivos</h2>
+    <ul>
+    {% for file in files %}
+        <li><a href="{{ url_for('static', filename=file) }}">{{ file }}</a></li>
+    {% endfor %}
+    </ul>
+  </body>
+</html>

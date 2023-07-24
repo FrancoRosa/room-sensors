@@ -29,7 +29,7 @@ sample = {
 def save_csv(payload):
     header = "Fecha hora; T1; H1; T2; H2; T3; H3; T4; H4; T5; H5; T6; H6; T7; H8; T9; H9; T10; H10; Tp; Hp\n"
     current_datetime = datetime.now()
-    file_root = "/home/pi/room-sensors/csv/"
+    file_root = "/home/pi/room-sensors/api/static/"
     filename = file_root + current_datetime.strftime("%Y-%m") + ".csv"
     file_path = Path(filename)
     exists = file_path.exists()

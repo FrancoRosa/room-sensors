@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request, jsonify, make_response, render_template
 from flask_cors import CORS
 from flask_socketio import SocketIO
 from json import dumps
@@ -6,6 +6,7 @@ from time import time
 from datetime import datetime
 from models import *
 from helpers import *
+from os import listdir
 
 portHTTP = 5001
 
@@ -106,6 +107,12 @@ def updateRoomEntry(room_id):
 @app.route('/', methods=['GET'])
 def home():
     return "... sensors server running on port %d\n" % portHTTP
+
+# files
+@app.route('/files')
+def files():
+    filenames = listdir('/home/pi/room-sensors/api/static')
+    return render_template('files.html', files=filenames)
 
 # rooms
 
