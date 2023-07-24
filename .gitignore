@@ -9,7 +9,7 @@ firebase.js
 
 # testing
 /coverage
-
+*.csv
 # production
 # /build
 

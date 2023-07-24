@@ -4,6 +4,8 @@ from re import sub
 from threading import Thread
 from serial import Serial
 from time import sleep, time
+from datetime import datetime
+from pathlib import Path
 
 time_to_send = False
 url = 'http://localhost:5001'
@@ -24,6 +26,25 @@ sample = {
 }
 
 
+def save_csv(payload):
+    header = "Fecha hora; T1; H1; T2; H2; T3; H3; T4; H4; T5; H5; T6; H6; T7; H8; T9; H9; T10; H10; Tp; Hp\n"
+    current_datetime = datetime.now()
+    file_root = "/home/pi/room-sensors/csv/"
+    filename = file_root + current_datetime.strftime("%Y-%m") + ".csv"
+    file_path = Path(filename)
+    exists = file_path.exists()
+    timestamp = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
+    line = timestamp
+    for s in payload['sensors']:
+        line = line + "; " + str(s['value'])
+    line = line + "\n"
+
+    with open(filename, "a") as file:
+        if not exists:
+            print("file does not exists")
+            file.write(header)
+        file.write(line)
+
 def send_echo(payload):
     room = payload['room']
     sensors = payload['sensors']
@@ -36,6 +57,7 @@ def send_echo(payload):
 
 
 def send_measurement(payload):
+    save_csv(payload)
     room = payload['room']
     sensors = payload['sensors']
     for sensor in sensors:
